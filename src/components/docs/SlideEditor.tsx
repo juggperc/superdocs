@@ -228,7 +228,7 @@ const normalizeSlides = (content?: string): Slide[] => {
       elements: Array.isArray(slide.elements)
         ? slide.elements.map((el: Partial<SlideElement>, elementIndex: number) => ({
             id: el.id || `el-${slideIndex + 1}-${elementIndex + 1}`,
-            type: el.type === "image" || el.type === "shape" ? el.type : "text",
+            type: el.type && (el.type === "image" || el.type === "shape") ? el.type : "text",
             content: typeof el.content === "string" ? el.content : "",
             x: typeof el.x === "number" ? el.x : 10,
             y: typeof el.y === "number" ? el.y : 10,
@@ -272,6 +272,7 @@ export default function SlideEditor({
   const [activeSlideIndex, setActiveSlideIndex] = useState(0)
   const [selectedElementId, setSelectedElementId] = useState<string | null>(null)
   const [showTemplates, setShowTemplates] = useState(false)
+  const [imageError, setImageError] = useState<string | null>(null)
   const canvasRef = useRef<HTMLDivElement | null>(null)
 
   const triggerSave = useCallback((newSlides: Slide[]) => {
@@ -376,8 +377,15 @@ export default function SlideEditor({
     input.onchange = () => {
       const file = input.files?.[0]
       if (!file) return
-      if (!file.type.startsWith("image/")) return
-      if (file.size > 5 * 1024 * 1024) return
+      if (!file.type.startsWith("image/")) {
+        setImageError("Please select a valid image file.")
+        return
+      }
+      if (file.size > 5 * 1024 * 1024) {
+        setImageError("Image must be 5MB or smaller.")
+        return
+      }
+      setImageError(null)
       const reader = new FileReader()
       reader.onload = () => {
         const src = typeof reader.result === "string" ? reader.result : ""
@@ -595,6 +603,7 @@ export default function SlideEditor({
         >
           <LayoutTemplate className="w-3.5 h-3.5" /> Templates
         </button>
+        {imageError && <span className="ml-2 text-[10px] text-red-300">{imageError}</span>}
       </div>
 
       <div className="flex-1 flex overflow-hidden">
