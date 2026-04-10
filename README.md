@@ -1,36 +1,67 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Superdocs (Warp Suite)
 
-## Getting Started
+Superdocs is an AI-native workspace with integrated **Docs**, **Sheets**, **Slides**, and **Warp AI** file chat.
 
-First, run the development server:
+## Features
+
+- Unified workspace with library + tabbed editing across document types
+- Rich text docs editor (TipTap-based)
+- Spreadsheet editor with grid data persistence
+- Slides editor with:
+  - Multi-slide deck editing
+  - Templates (Title Deck, Pitch, Agenda)
+  - Text, shape, and image elements
+  - Drag-and-drop positioning
+  - Element property controls (typography, color, dimensions, coordinates)
+  - Slide duplication, deletion, and reordering
+- Cross-file AI context support with Warp Assistant and Warp chat
+
+## Tech
+
+- Next.js App Router (Next 16)
+- React 19
+- TypeScript
+- Tailwind CSS
+- Clerk (authentication)
+
+## Setup
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open `http://localhost:3000`.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Clerk setup
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+This project uses Clerk with App Router + Proxy.
 
-## Learn More
+1. Create a Clerk app in the Clerk dashboard.
+2. Add your Clerk environment variables in `.env.local`.
+3. Start the app and open the top nav.
+4. Click **Sign up** and create your first test user.
 
-To learn more about Next.js, take a look at the following resources:
+After sign-up succeeds and your profile icon appears in nav, congratulations — Clerk is wired correctly.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Implemented Clerk requirements
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- `clerkMiddleware()` configured in `src/proxy.ts`
+- `<ClerkProvider>` inside `<body>` in `src/app/layout.tsx`
+- App Router structure (`src/app/...`)
+- Auth UI uses:
+  - `<Show when="signed-out">` + `<SignInButton>` + `<SignUpButton>`
+  - `<Show when="signed-in">` + `<UserButton>`
+- `auth()` from `@clerk/nextjs/server` used with `async/await` in root layout
 
-## Deploy on Vercel
+## Next Clerk steps
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- Organizations: https://clerk.com/docs/guides/organizations/overview
+- Components: https://clerk.com/docs/reference/components/overview
+- Dashboard: https://dashboard.clerk.com/
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Scripts
+
+- `npm run dev` - local development
+- `npm run lint` - lint checks
+- `npm run build` - production build

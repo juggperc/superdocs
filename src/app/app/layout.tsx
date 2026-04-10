@@ -1,11 +1,17 @@
 "use client"
 
-import { Layers, Settings, User } from "lucide-react"
+import { Layers, Settings } from "lucide-react"
 import Link from "next/link"
-import { useState, useEffect } from "react"
+import { useState } from "react"
+import { Show, SignInButton, SignUpButton, UserButton } from "@clerk/nextjs"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
+
+const getInitialModelId = () =>
+  typeof window !== "undefined"
+    ? localStorage.getItem("openrouter_model_id") || "meta-llama/llama-3-8b-instruct:free"
+    : "meta-llama/llama-3-8b-instruct:free"
 
 export default function AppLayout({
   children,
@@ -13,19 +19,9 @@ export default function AppLayout({
   children: React.ReactNode
 }) {
   const [settingsOpen, setSettingsOpen] = useState(false)
-  const [apiKey, setApiKey] = useState("")
-  const [modelId, setModelId] = useState("meta-llama/llama-3-8b-instruct:free")
-
-  useEffect(() => {
-    const savedKey = localStorage.getItem("openrouter_api_key")
-    if (savedKey) setApiKey(savedKey)
-
-    const savedModel = localStorage.getItem("openrouter_model_id")
-    if (savedModel) setModelId(savedModel)
-  }, [])
+  const [modelId, setModelId] = useState(getInitialModelId)
 
   const saveSettings = () => {
-    localStorage.setItem("openrouter_api_key", apiKey)
     localStorage.setItem("openrouter_model_id", modelId)
     setSettingsOpen(false)
   }
@@ -42,6 +38,33 @@ export default function AppLayout({
         </div>
 
         <div className="flex items-center gap-2 text-zinc-500">
+          <Show when="signed-out">
+            <SignInButton mode="modal">
+              <button
+                type="button"
+                className="px-3 h-8 rounded-md text-xs font-medium border border-zinc-200 hover:bg-zinc-100 transition-colors text-zinc-700"
+              >
+                Sign in
+              </button>
+            </SignInButton>
+            <SignUpButton mode="modal">
+              <button
+                type="button"
+                className="px-3 h-8 rounded-md text-xs font-medium bg-zinc-900 text-white hover:bg-zinc-800 transition-colors"
+              >
+                Sign up
+              </button>
+            </SignUpButton>
+          </Show>
+          <Show when="signed-in">
+            <UserButton
+              appearance={{
+                elements: {
+                  avatarBox: "w-8 h-8",
+                },
+              }}
+            />
+          </Show>
           <button 
             type="button" 
             onClick={() => setSettingsOpen(true)}
@@ -49,9 +72,6 @@ export default function AppLayout({
           >
             <Settings className="w-5 h-5" />
           </button>
-          <div className="w-8 h-8 bg-zinc-800 rounded-full flex items-center justify-center text-white ml-2 overflow-hidden shadow-sm">
-            <User className="w-4 h-4" />
-          </div>
         </div>
       </header>
 
@@ -68,23 +88,10 @@ export default function AppLayout({
               Configure your AI assistant preferences.
             </DialogDescription>
           </DialogHeader>
-          <div className="grid gap-4 py-4">
-            <div className="grid grid-cols-4 items-center gap-4">
-              <label htmlFor="apiKey" className="text-right text-sm font-medium">
-                OpenRouter Key
-              </label>
-              <Input
-                id="apiKey"
-                value={apiKey}
-                onChange={(e) => setApiKey(e.target.value)}
-                placeholder="sk-or-v1-..."
-                className="col-span-3"
-                type="password"
-              />
-            </div>
-            <div className="grid grid-cols-4 items-center gap-4">
-              <label htmlFor="modelId" className="text-right text-sm font-medium">
-                Model ID
+            <div className="grid gap-4 py-4">
+              <div className="grid grid-cols-4 items-center gap-4">
+                <label htmlFor="modelId" className="text-right text-sm font-medium">
+                  Model ID
               </label>
               <Input
                 id="modelId"
