@@ -70,10 +70,10 @@ export default function Home() {
               <span className="text-gradient">Every document type.</span>
             </h1>
 
-             <p className="text-base sm:text-lg text-muted-foreground mb-10 max-w-xl mx-auto leading-relaxed">
-               Docs, sheets, and slides in a unified environment.
-               superdocs AI reads across all of them to make real edits — not just suggestions.
-             </p>
+            <p className="text-base sm:text-lg text-muted-foreground mb-10 max-w-xl mx-auto leading-relaxed">
+              Docs, sheets, and slides in a unified environment.
+              superdocs AI reads across all of them to make real edits — not just suggestions.
+            </p>
 
             <div className="flex items-center justify-center gap-3">
               <Link href="/app">
@@ -231,10 +231,10 @@ export default function Home() {
 
       <footer className="border-t border-white/[0.06] py-8">
         <div className="max-w-6xl mx-auto px-6 flex items-center justify-between text-xs text-muted-foreground">
-            <div className="flex items-center gap-2">
-              <Sparkles className="w-3 h-3 text-primary" />
-              superdocs
-            </div>
+          <div className="flex items-center gap-2">
+            <Sparkles className="w-3 h-3 text-primary" />
+            superdocs
+          </div>
           <span>Built for people who ship.</span>
         </div>
       </footer>
