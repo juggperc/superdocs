@@ -1,155 +1,241 @@
 import { Button } from "@/components/ui/button"
-import { Card } from "@/components/ui/card"
-import { 
-  FileText, 
-  Table, 
-  Presentation, 
-  ChevronRight, 
+import {
+  FileText,
+  Table,
+  Presentation,
   Sparkles,
-  Layers
+  ArrowRight,
+  Zap,
+  Shield,
+  Globe,
 } from "lucide-react"
 import Link from "next/link"
 import { Metadata } from "next"
 
 export const metadata: Metadata = {
-  title: "superdocs | the agentic office suite",
-  description: "seamless, minimalist, and powered by advanced ai.",
+  title: "Warp Suite — AI-Native Workspace",
+  description: "Unified workspace where AI connects your docs, sheets, and slides.",
 }
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-[#111111] text-zinc-100 font-sans selection:bg-blue-500/30">
-      {/* Navigation */}
-      <header className="sticky top-0 z-50 w-full border-b border-white/5 bg-[#111111]/80 backdrop-blur-md">
-        <div className="container mx-auto px-4 h-16 flex items-center justify-between">
-          <Link href="/" className="flex items-center gap-2 text-white font-bold text-xl tracking-tight">
-            <Layers className="w-5 h-5 text-blue-500" />
-            superdocs
+    <div className="min-h-screen bg-background text-foreground font-sans selection:bg-primary/30">
+      <header className="sticky top-0 z-50 w-full glass-subtle">
+        <div className="max-w-6xl mx-auto px-6 h-14 flex items-center justify-between">
+          <Link href="/" className="flex items-center gap-2.5 text-foreground font-semibold text-sm tracking-tight">
+            <div className="w-7 h-7 rounded-lg bg-primary/15 flex items-center justify-center glow-sm">
+              <Sparkles className="w-3.5 h-3.5 text-primary" />
+            </div>
+            Warp Suite
           </Link>
-          
-          <nav className="hidden md:flex items-center gap-8 text-sm font-medium text-zinc-400">
-            <Link href="#docs" className="hover:text-white transition-colors">docs</Link>
-            <Link href="#sheets" className="hover:text-white transition-colors">sheets</Link>
-            <Link href="#slides" className="hover:text-white transition-colors">slides</Link>
-            <Link href="#pricing" className="hover:text-white transition-colors">pricing</Link>
+
+          <nav className="hidden md:flex items-center gap-1">
+            {["Docs", "Sheets", "Slides"].map((item) => (
+              <Link
+                key={item}
+                href={`#${item.toLowerCase()}`}
+                className="px-3 py-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors rounded-md hover:bg-white/[0.04]"
+              >
+                {item}
+              </Link>
+            ))}
           </nav>
 
-          <div className="flex items-center gap-4">
-            <Link href="/app">
-              <Button className="bg-blue-600 hover:bg-blue-700 text-white rounded-full px-6 font-medium border-0 h-9">
-                get started
-              </Button>
-            </Link>
-          </div>
+          <Link href="/app">
+            <Button className="bg-primary text-primary-foreground hover:bg-primary/90 rounded-lg px-4 h-8 text-sm font-medium glow-sm">
+              Open App
+              <ArrowRight className="w-3.5 h-3.5 ml-1" />
+            </Button>
+          </Link>
         </div>
       </header>
 
-      <main className="container mx-auto px-4 pt-32 pb-24">
-        {/* Hero Section */}
-        <section className="flex flex-col items-center text-center max-w-4xl mx-auto mb-32">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-xs font-medium text-zinc-300 mb-8">
-            <span className="w-1.5 h-1.5 rounded-full bg-blue-500 animate-pulse" />
-            introducing superdocs 2.0
+      <main>
+        <section className="relative pt-28 pb-20 overflow-hidden">
+          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[600px] opacity-30 pointer-events-none">
+            <div className="absolute top-0 left-[20%] w-72 h-72 bg-primary/20 blur-[120px] rounded-full" />
+            <div className="absolute top-[30%] right-[10%] w-56 h-56 bg-purple-500/15 blur-[100px] rounded-full" />
+            <div className="absolute bottom-0 left-[40%] w-64 h-48 bg-cyan-500/10 blur-[100px] rounded-full" />
           </div>
-          
-          <h1 className="text-5xl md:text-7xl font-bold text-white tracking-tight mb-6 leading-tight">
-            the agentic<br />office suite.
-          </h1>
-          
-          <p className="text-lg md:text-xl text-zinc-400 mb-10 max-w-2xl font-light">
-            not just tools. intelligent partners that anticipate your next move.<br />
-            seamless, minimalist, and powered by advanced ai.
-          </p>
-          
-          <div className="flex items-center gap-4">
+
+          <div className="relative z-10 max-w-3xl mx-auto px-6 text-center">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full glass text-xs font-medium text-muted-foreground mb-8">
+              <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
+              Your workspace, connected by AI
+            </div>
+
+            <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight mb-5 leading-[1.1]">
+              <span className="text-foreground">One workspace.</span>
+              <br />
+              <span className="text-gradient">Every document type.</span>
+            </h1>
+
+            <p className="text-base sm:text-lg text-muted-foreground mb-10 max-w-xl mx-auto leading-relaxed">
+              Docs, sheets, and slides in a unified environment.
+              Warp AI reads across all of them to make real edits — not just suggestions.
+            </p>
+
+            <div className="flex items-center justify-center gap-3">
+              <Link href="/app">
+                <Button className="bg-foreground text-background hover:bg-foreground/90 rounded-lg px-6 h-10 text-sm font-semibold">
+                  Start Building
+                  <ArrowRight className="w-4 h-4 ml-1.5" />
+                </Button>
+              </Link>
+            </div>
+          </div>
+        </section>
+
+        <section className="pb-24 px-6">
+          <div className="max-w-4xl mx-auto">
+            <div className="glass rounded-2xl overflow-hidden noise">
+              <div className="h-10 border-b border-white/[0.06] flex items-center px-4 gap-2">
+                <div className="w-2.5 h-2.5 rounded-full bg-white/10" />
+                <div className="w-2.5 h-2.5 rounded-full bg-white/10" />
+                <div className="w-2.5 h-2.5 rounded-full bg-white/10" />
+                <div className="flex-1 flex justify-center">
+                  <div className="text-[10px] text-muted-foreground/60 font-mono">warp-suite.app</div>
+                </div>
+              </div>
+              <div className="p-8 sm:p-12 flex flex-col items-center justify-center min-h-[300px] relative">
+                <div className="absolute inset-0 bg-gradient-to-b from-primary/[0.03] to-transparent pointer-events-none" />
+                <div className="relative flex items-center gap-6 flex-wrap justify-center">
+                  {[
+                    { icon: FileText, label: "Doc", color: "text-blue-400" },
+                    { icon: Table, label: "Sheet", color: "text-emerald-400" },
+                    { icon: Presentation, label: "Slide", color: "text-amber-400" },
+                  ].map((item) => (
+                    <div key={item.label} className="glass rounded-xl p-6 flex flex-col items-center gap-3 w-28 hover:bg-white/[0.06] transition-colors">
+                      <item.icon className={`w-8 h-8 ${item.color}`} />
+                      <span className="text-xs font-medium text-muted-foreground">{item.label}</span>
+                    </div>
+                  ))}
+                </div>
+                <div className="mt-8 flex items-center gap-2.5">
+                  <div className="h-px w-12 bg-gradient-to-r from-transparent to-primary/30" />
+                  <div className="w-10 h-10 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center glow-sm">
+                    <Sparkles className="w-5 h-5 text-primary" />
+                  </div>
+                  <div className="h-px w-12 bg-gradient-to-l from-transparent to-primary/30" />
+                </div>
+                <p className="mt-4 text-xs text-muted-foreground/70 font-medium">Warp reads across all your files</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="docs" className="pb-24 px-6">
+          <div className="max-w-5xl mx-auto">
+            <div className="mb-12">
+              <h2 className="text-2xl sm:text-3xl font-bold tracking-tight mb-3">
+                Three editors. One AI brain.
+              </h2>
+              <p className="text-muted-foreground max-w-lg">
+                Each tool is purpose-built. Warp connects them all, so updating a slide from a spreadsheet is one sentence away.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              {[
+                {
+                  icon: FileText,
+                  title: "Docs",
+                  desc: "Rich text editor with full formatting. Write, structure, and let Warp draft or refine sections in your voice.",
+                  color: "text-blue-400",
+                  glow: "group-hover:shadow-[0_0_30px_oklch(0.65_0.15_250/12%)]",
+                },
+                {
+                  icon: Table,
+                  title: "Sheets",
+                  desc: "Spreadsheet grid for structured data. Warp can read cell values and generate analysis across your workspace.",
+                  color: "text-emerald-400",
+                  glow: "group-hover:shadow-[0_0_30px_oklch(0.70_0.15_160/12%)]",
+                },
+                {
+                  icon: Presentation,
+                  title: "Slides",
+                  desc: "Canvas-based presentation builder. Position text elements on a 16:9 stage, let Warp populate content from your docs.",
+                  color: "text-amber-400",
+                  glow: "group-hover:shadow-[0_0_30px_oklch(0.70_0.15_60/12%)]",
+                },
+              ].map((item) => (
+                <div
+                  key={item.title}
+                  className={`group glass rounded-xl p-6 transition-all duration-300 hover:bg-white/[0.05] ${item.glow}`}
+                >
+                  <item.icon className={`w-8 h-8 ${item.color} mb-4`} />
+                  <h3 className="text-base font-semibold text-foreground mb-2">{item.title}</h3>
+                  <p className="text-sm text-muted-foreground leading-relaxed">{item.desc}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <section className="pb-24 px-6">
+          <div className="max-w-5xl mx-auto">
+            <div className="mb-12">
+              <h2 className="text-2xl sm:text-3xl font-bold tracking-tight mb-3">
+                How it works
+              </h2>
+              <p className="text-muted-foreground max-w-lg">
+                Bring your own OpenRouter API key. Pick any model. Warp handles the rest.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              {[
+                {
+                  icon: Globe,
+                  title: "Workspaces",
+                  desc: "Group related files into semantic workspaces. Warp uses this as its context boundary.",
+                },
+                {
+                  icon: Zap,
+                  title: "Cross-file AI",
+                  desc: "Ask Warp to read from one file and write to another. It sees your entire workspace.",
+                },
+                {
+                  icon: Shield,
+                  title: "Your keys, your data",
+                  desc: "BYOK via OpenRouter. No data leaves your browser except to the model you choose.",
+                },
+              ].map((item) => (
+                <div key={item.title} className="glass-subtle rounded-xl p-6">
+                  <item.icon className="w-5 h-5 text-primary mb-3" />
+                  <h3 className="text-sm font-semibold text-foreground mb-1.5">{item.title}</h3>
+                  <p className="text-sm text-muted-foreground leading-relaxed">{item.desc}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <section className="pb-32 px-6">
+          <div className="max-w-2xl mx-auto text-center">
+            <h2 className="text-2xl sm:text-3xl font-bold tracking-tight mb-4">
+              Ready to try it?
+            </h2>
+            <p className="text-muted-foreground mb-8">
+              Runs entirely in your browser. Add your OpenRouter key in settings and start working.
+            </p>
             <Link href="/app">
-              <Button size="lg" className="bg-white text-black hover:bg-zinc-200 rounded-full px-8 h-12 text-base font-medium">
-                start for free
+              <Button className="bg-primary text-primary-foreground hover:bg-primary/90 rounded-lg px-8 h-10 text-sm font-semibold glow-md">
+                Open Warp Suite
+                <ArrowRight className="w-4 h-4 ml-1.5" />
               </Button>
             </Link>
-            <Button size="lg" variant="outline" className="rounded-full px-8 h-12 text-base font-medium border-white/20 text-white hover:bg-white/5 hover:text-white bg-transparent">
-              book a demo
-            </Button>
-          </div>
-        </section>
-
-        {/* Abstract UI Graphic */}
-        <section className="mb-32">
-          <div className="w-full h-[400px] md:h-[500px] rounded-3xl overflow-hidden border border-white/5 relative group bg-gradient-to-br from-zinc-900 to-black">
-             {/* Abstract wave decoration */}
-             <div className="absolute inset-0 opacity-30">
-               <div className="absolute top-[20%] left-[10%] w-[60%] h-[60%] bg-blue-500/20 blur-[120px] rounded-full mix-blend-screen" />
-               <div className="absolute top-[30%] right-[10%] w-[50%] h-[50%] bg-orange-500/10 blur-[100px] rounded-full mix-blend-screen" />
-               <div className="absolute -bottom-[20%] left-[30%] w-[70%] h-[50%] bg-purple-500/10 blur-[120px] rounded-full mix-blend-screen" />
-             </div>
-             
-             {/* Glass panel overlay to simulate UI */}
-             <div className="absolute inset-10 border border-white/5 rounded-2xl bg-black/40 backdrop-blur-xl shadow-2xl flex flex-col">
-               <div className="h-12 border-b border-white/5 flex items-center px-4 gap-2">
-                 <div className="w-3 h-3 rounded-full bg-zinc-800" />
-                 <div className="w-3 h-3 rounded-full bg-zinc-800" />
-                 <div className="w-3 h-3 rounded-full bg-zinc-800" />
-               </div>
-               <div className="flex-1 p-8 flex items-center justify-center">
-                 <div className="w-16 h-16 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center">
-                   <Sparkles className="w-8 h-8 text-blue-400" />
-                 </div>
-               </div>
-             </div>
-          </div>
-        </section>
-
-        {/* Features Section */}
-        <section className="max-w-6xl mx-auto">
-          <div className="mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-white mb-4 tracking-tight">
-              the apps you know, reinvented.
-            </h2>
-            <p className="text-zinc-400 text-lg max-w-2xl font-light">
-              experience a workspace where documentation writes itself, data analyzes itself, and presentations design themselves.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {/* Docs Card */}
-            <Card className="bg-[#1a1a1a] border-white/5 p-8 rounded-2xl hover:bg-[#222] transition-colors group">
-              <div className="w-12 h-12 bg-blue-500/10 text-blue-400 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                <FileText className="w-6 h-6" />
-              </div>
-              <h3 className="text-xl font-semibold text-white mb-3 tracking-tight">superdocs docs</h3>
-              <p className="text-zinc-400 text-sm leading-relaxed">
-                an intelligent writing environment that drafts perfect prose, summarizes research, and adapts to your brand voice instantly.
-              </p>
-            </Card>
-
-            {/* Sheets Card */}
-            <Card className="bg-[#1a1a1a] border-white/5 p-8 rounded-2xl hover:bg-[#222] transition-colors group">
-              <div className="w-12 h-12 bg-emerald-500/10 text-emerald-400 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                <Table className="w-6 h-6" />
-              </div>
-              <h3 className="text-xl font-semibold text-white mb-3 tracking-tight">superdocs sheets</h3>
-              <p className="text-zinc-400 text-sm leading-relaxed">
-                relational data analysis that anticipates your needs, automatically cleaning data and generating insights without complex formulas.
-              </p>
-            </Card>
-
-            {/* Slides Card */}
-            <Card className="bg-[#1a1a1a] border-white/5 p-8 rounded-2xl hover:bg-[#222] transition-colors group">
-              <div className="w-12 h-12 bg-pink-500/10 text-pink-400 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                <Presentation className="w-6 h-6" />
-              </div>
-              <h3 className="text-xl font-semibold text-white mb-3 tracking-tight">superdocs slides</h3>
-              <p className="text-zinc-400 text-sm leading-relaxed">
-                presentations that design themselves. input your outline, and watch as layouts, typography, and visuals are orchestrated perfectly.
-              </p>
-            </Card>
           </div>
         </section>
       </main>
-      
-      <footer className="border-t border-white/5 py-12 mt-20">
-        <div className="container mx-auto px-4 text-center text-zinc-500 text-sm">
-          &copy; {new Date().getFullYear()} superdocs inc. all rights reserved.
+
+      <footer className="border-t border-white/[0.06] py-8">
+        <div className="max-w-6xl mx-auto px-6 flex items-center justify-between text-xs text-muted-foreground">
+          <div className="flex items-center gap-2">
+            <Sparkles className="w-3 h-3 text-primary" />
+            Warp Suite
+          </div>
+          <span>Built for people who ship.</span>
         </div>
       </footer>
     </div>
