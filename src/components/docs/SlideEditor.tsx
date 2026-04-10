@@ -271,6 +271,16 @@ export default function SlideEditor({
   const [showTemplates, setShowTemplates] = useState(false)
   const canvasRef = useRef<HTMLDivElement | null>(null)
 
+  useEffect(() => {
+    const ids = slides.flatMap((slide) => [slide.id, ...slide.elements.map((el) => el.id)])
+    const maxSeen = ids.reduce((max, id) => {
+      const match = id.match(/-(\d+)$/)
+      if (!match) return max
+      return Math.max(max, Number(match[1]))
+    }, 0)
+    if (maxSeen > idCounterRef.current) idCounterRef.current = maxSeen
+  }, [slides])
+
   const triggerSave = useCallback((newSlides: Slide[]) => {
     setIsSaving(true)
     onContentChange?.(JSON.stringify(newSlides))
@@ -283,7 +293,14 @@ export default function SlideEditor({
     triggerSave(newSlides)
   }, [triggerSave])
 
-  const activeSlide = slides[activeSlideIndex]
+  const activeSlide =
+    slides[activeSlideIndex] ||
+    slides[0] || {
+      id: "slide-fallback",
+      templateId: "blank",
+      background: "linear-gradient(160deg, oklch(0.14 0.01 260), oklch(0.11 0.01 260))",
+      elements: [],
+    }
 
   const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTitle(e.target.value)

@@ -1,6 +1,6 @@
 "use client"
 
-import { Layers, Settings, User } from "lucide-react"
+import { Layers, Settings } from "lucide-react"
 import Link from "next/link"
 import { useState } from "react"
 import { Show, SignInButton, SignUpButton, UserButton } from "@clerk/nextjs"
@@ -8,7 +8,6 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, Di
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 
-const getInitialApiKey = () => (typeof window !== "undefined" ? localStorage.getItem("openrouter_api_key") || "" : "")
 const getInitialModelId = () =>
   typeof window !== "undefined"
     ? localStorage.getItem("openrouter_model_id") || "meta-llama/llama-3-8b-instruct:free"
@@ -20,11 +19,9 @@ export default function AppLayout({
   children: React.ReactNode
 }) {
   const [settingsOpen, setSettingsOpen] = useState(false)
-  const [apiKey, setApiKey] = useState(getInitialApiKey)
   const [modelId, setModelId] = useState(getInitialModelId)
 
   const saveSettings = () => {
-    localStorage.setItem("openrouter_api_key", apiKey)
     localStorage.setItem("openrouter_model_id", modelId)
     setSettingsOpen(false)
   }
@@ -75,11 +72,6 @@ export default function AppLayout({
           >
             <Settings className="w-5 h-5" />
           </button>
-          <Show when="signed-out">
-            <div className="w-8 h-8 bg-zinc-800 rounded-full flex items-center justify-center text-white ml-1 overflow-hidden shadow-sm">
-              <User className="w-4 h-4" />
-            </div>
-          </Show>
         </div>
       </header>
 
@@ -96,23 +88,10 @@ export default function AppLayout({
               Configure your AI assistant preferences.
             </DialogDescription>
           </DialogHeader>
-          <div className="grid gap-4 py-4">
-            <div className="grid grid-cols-4 items-center gap-4">
-              <label htmlFor="apiKey" className="text-right text-sm font-medium">
-                OpenRouter Key
-              </label>
-              <Input
-                id="apiKey"
-                value={apiKey}
-                onChange={(e) => setApiKey(e.target.value)}
-                placeholder="sk-or-v1-..."
-                className="col-span-3"
-                type="password"
-              />
-            </div>
-            <div className="grid grid-cols-4 items-center gap-4">
-              <label htmlFor="modelId" className="text-right text-sm font-medium">
-                Model ID
+            <div className="grid gap-4 py-4">
+              <div className="grid grid-cols-4 items-center gap-4">
+                <label htmlFor="modelId" className="text-right text-sm font-medium">
+                  Model ID
               </label>
               <Input
                 id="modelId"
