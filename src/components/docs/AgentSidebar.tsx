@@ -62,7 +62,7 @@ export default function AgentSidebar({ onAgentStateChange, editorRef, workspaceA
           model: modelId,
           stream: true,
           messages: [
-            { role: "system", content: "You are Warp, an AI assistant in Warp Suite. Generate content to append to the user's document. Output only the final text, no conversational padding." },
+            { role: "system", content: "You are Warp, an AI assistant in Superdocs. Generate content to append to the user's document. Output only the final text, no conversational padding." },
             { role: "user", content: `Current document:\n\n${currentContent}${workspaceContext}\n\nRequest: ${promptToUse}` },
           ],
         }),

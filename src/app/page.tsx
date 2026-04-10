@@ -8,12 +8,13 @@ import {
   Zap,
   Shield,
   Globe,
+  Download,
 } from "lucide-react"
 import Link from "next/link"
 import { Metadata } from "next"
 
 export const metadata: Metadata = {
-  title: "Warp Suite — AI-Native Workspace",
+  title: "Superdocs — AI-Native Workspace",
   description: "Unified workspace where AI connects your docs, sheets, and slides.",
 }
 
@@ -26,7 +27,7 @@ export default function Home() {
             <div className="w-7 h-7 rounded-lg bg-primary/15 flex items-center justify-center glow-sm">
               <Sparkles className="w-3.5 h-3.5 text-primary" />
             </div>
-            Warp Suite
+            Superdocs
           </Link>
 
           <nav className="hidden md:flex items-center gap-1">
@@ -61,18 +62,17 @@ export default function Home() {
           <div className="relative z-10 max-w-3xl mx-auto px-6 text-center">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full glass text-xs font-medium text-muted-foreground mb-8">
               <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
-              Your workspace, connected by AI
+              AI-native document workspace
             </div>
 
             <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight mb-5 leading-[1.1]">
-              <span className="text-foreground">One workspace.</span>
+              <span className="text-foreground">Superdocs.</span>
               <br />
-              <span className="text-gradient">Every document type.</span>
+              <span className="text-gradient">Docs, sheets, slides — unified.</span>
             </h1>
 
             <p className="text-base sm:text-lg text-muted-foreground mb-10 max-w-xl mx-auto leading-relaxed">
-              Docs, sheets, and slides in a unified environment.
-              Warp AI reads across all of them to make real edits — not just suggestions.
+              One workspace for everything. The Warp AI engine reads across all your files to make real cross-document edits. Export to .docx when you&apos;re done.
             </p>
 
             <div className="flex items-center justify-center gap-3">
@@ -94,7 +94,7 @@ export default function Home() {
                 <div className="w-2.5 h-2.5 rounded-full bg-white/10" />
                 <div className="w-2.5 h-2.5 rounded-full bg-white/10" />
                 <div className="flex-1 flex justify-center">
-                  <div className="text-[10px] text-muted-foreground/60 font-mono">warp-suite.app</div>
+                  <div className="text-[10px] text-muted-foreground/60 font-mono">superdocs.app</div>
                 </div>
               </div>
               <div className="p-8 sm:p-12 flex flex-col items-center justify-center min-h-[300px] relative">
@@ -131,7 +131,7 @@ export default function Home() {
                 Three editors. One AI brain.
               </h2>
               <p className="text-muted-foreground max-w-lg">
-                Each tool is purpose-built. Warp connects them all, so updating a slide from a spreadsheet is one sentence away.
+                Each tool is purpose-built. Warp connects them — update a slide from a spreadsheet in one sentence.
               </p>
             </div>
 
@@ -140,21 +140,21 @@ export default function Home() {
                 {
                   icon: FileText,
                   title: "Docs",
-                  desc: "Rich text editor with full formatting. Write, structure, and let Warp draft or refine sections in your voice.",
+                  desc: "Rich text editor with full formatting, code blocks, images, and .docx export. Warp drafts and refines sections in context.",
                   color: "text-blue-400",
                   glow: "group-hover:shadow-[0_0_30px_oklch(0.65_0.15_250/12%)]",
                 },
                 {
                   icon: Table,
                   title: "Sheets",
-                  desc: "Spreadsheet grid for structured data. Warp can read cell values and generate analysis across your workspace.",
+                  desc: "Spreadsheet grid for structured data. Warp reads cell values and generates analysis across your workspace.",
                   color: "text-emerald-400",
                   glow: "group-hover:shadow-[0_0_30px_oklch(0.70_0.15_160/12%)]",
                 },
                 {
                   icon: Presentation,
                   title: "Slides",
-                  desc: "Canvas-based presentation builder. Position text elements on a 16:9 stage, let Warp populate content from your docs.",
+                  desc: "Canvas-based presentation builder. 16:9 stage with positioned elements, Warp populates content from your docs.",
                   color: "text-amber-400",
                   glow: "group-hover:shadow-[0_0_30px_oklch(0.70_0.15_60/12%)]",
                 },
@@ -179,27 +179,16 @@ export default function Home() {
                 How it works
               </h2>
               <p className="text-muted-foreground max-w-lg">
-                Bring your own OpenRouter API key. Pick any model. Warp handles the rest.
+                Bring your own OpenRouter API key. Pick any model. Superdocs handles the rest.
               </p>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
               {[
-                {
-                  icon: Globe,
-                  title: "Workspaces",
-                  desc: "Group related files into semantic workspaces. Warp uses this as its context boundary.",
-                },
-                {
-                  icon: Zap,
-                  title: "Cross-file AI",
-                  desc: "Ask Warp to read from one file and write to another. It sees your entire workspace.",
-                },
-                {
-                  icon: Shield,
-                  title: "Your keys, your data",
-                  desc: "BYOK via OpenRouter. No data leaves your browser except to the model you choose.",
-                },
+                { icon: Globe, title: "Workspaces", desc: "Group related files into semantic workspaces. Warp uses this as its context boundary." },
+                { icon: Zap, title: "Cross-file AI", desc: "Ask Warp to read from one file and write to another. It sees your entire workspace." },
+                { icon: Shield, title: "BYOK", desc: "Your keys, your data. No data leaves your browser except to the model you choose." },
+                { icon: Download, title: ".docx export", desc: "Export any document to Word format. Your content, portable and ready to share." },
               ].map((item) => (
                 <div key={item.title} className="glass-subtle rounded-xl p-6">
                   <item.icon className="w-5 h-5 text-primary mb-3" />
@@ -221,7 +210,7 @@ export default function Home() {
             </p>
             <Link href="/app">
               <Button className="bg-primary text-primary-foreground hover:bg-primary/90 rounded-lg px-8 h-10 text-sm font-semibold glow-md">
-                Open Warp Suite
+                Open Superdocs
                 <ArrowRight className="w-4 h-4 ml-1.5" />
               </Button>
             </Link>
@@ -233,7 +222,7 @@ export default function Home() {
         <div className="max-w-6xl mx-auto px-6 flex items-center justify-between text-xs text-muted-foreground">
           <div className="flex items-center gap-2">
             <Sparkles className="w-3 h-3 text-primary" />
-            Warp Suite
+            Superdocs
           </div>
           <span>Built for people who ship.</span>
         </div>

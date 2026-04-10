@@ -15,8 +15,8 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Warp Suite",
-  description: "AI-native workspace for docs, sheets, and slides.",
+  title: "Superdocs — AI-Native Workspace",
+  description: "Unified workspace where AI connects your docs, sheets, and slides.",
 };
 
 export default function RootLayout({
