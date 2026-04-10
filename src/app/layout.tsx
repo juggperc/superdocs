@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import { DM_Sans, JetBrains_Mono } from "next/font/google";
+import { ClerkProvider } from "@clerk/nextjs";
+import { auth } from "@clerk/nextjs/server";
 import "./globals.css";
 
 const dmSans = DM_Sans({
@@ -19,17 +21,21 @@ export const metadata: Metadata = {
   description: "AI-native workspace for docs, sheets, and slides.",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const { userId } = await auth();
+
   return (
     <html
       lang="en"
       className={`${dmSans.variable} ${jetbrainsMono.variable} h-full antialiased dark`}
     >
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="min-h-full flex flex-col" data-authenticated={Boolean(userId)}>
+        <ClerkProvider>{children}</ClerkProvider>
+      </body>
     </html>
   );
 }
