@@ -258,6 +258,9 @@ export default function SlideEditor({
 }: SlideEditorProps) {
   const idCounterRef = useRef(0)
   const makeId = useCallback((prefix: string) => {
+    if (typeof crypto !== "undefined" && typeof crypto.randomUUID === "function") {
+      return `${prefix}-${crypto.randomUUID()}`
+    }
     idCounterRef.current += 1
     return `${prefix}-${idCounterRef.current}`
   }, [])
@@ -270,16 +273,6 @@ export default function SlideEditor({
   const [selectedElementId, setSelectedElementId] = useState<string | null>(null)
   const [showTemplates, setShowTemplates] = useState(false)
   const canvasRef = useRef<HTMLDivElement | null>(null)
-
-  useEffect(() => {
-    const ids = slides.flatMap((slide) => [slide.id, ...slide.elements.map((el) => el.id)])
-    const maxSeen = ids.reduce((max, id) => {
-      const match = id.match(/-(\d+)$/)
-      if (!match) return max
-      return Math.max(max, Number(match[1]))
-    }, 0)
-    if (maxSeen > idCounterRef.current) idCounterRef.current = maxSeen
-  }, [slides])
 
   const triggerSave = useCallback((newSlides: Slide[]) => {
     setIsSaving(true)
@@ -383,6 +376,8 @@ export default function SlideEditor({
     input.onchange = () => {
       const file = input.files?.[0]
       if (!file) return
+      if (!file.type.startsWith("image/")) return
+      if (file.size > 5 * 1024 * 1024) return
       const reader = new FileReader()
       reader.onload = () => {
         const src = typeof reader.result === "string" ? reader.result : ""
