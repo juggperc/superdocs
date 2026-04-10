@@ -15,20 +15,22 @@ import {
   ArrowDown,
 } from "lucide-react"
 
+interface SlideEditorRef {
+  getText: () => string
+  chain: () => {
+    focus: () => {
+      insertContent: (text: string) => { run: () => void }
+    }
+  }
+}
+
 interface SlideEditorProps {
   isAgentActive?: boolean
   initialContent?: string
   initialTitle?: string
   onContentChange?: (content: string) => void
   onTitleChange?: (title: string) => void
-  editorRef?: React.MutableRefObject<{
-    getText: () => string
-    chain: () => {
-      focus: () => {
-        insertContent: (text: string) => { run: () => void }
-      }
-    }
-  } | null>
+  editorRef?: React.MutableRefObject<SlideEditorRef | null>
 }
 
 type ElementType = "text" | "image" | "shape"
@@ -62,16 +64,13 @@ interface SlideTemplate {
   createSlides: () => Slide[]
 }
 
-let idSeed = 0
-const makeId = (prefix: string) => `${prefix}-${++idSeed}`
-
 const defaultTitleSlide = (): Slide => ({
-  id: makeId("slide"),
+  id: "slide-1",
   templateId: "title",
   background: "linear-gradient(160deg, oklch(0.16 0.05 265), oklch(0.10 0.02 265))",
   elements: [
     {
-      id: makeId("el"),
+      id: "el-1",
       type: "text",
       content: "Presentation Title",
       x: 10,
@@ -84,7 +83,7 @@ const defaultTitleSlide = (): Slide => ({
       color: "#f7f7f8",
     },
     {
-      id: makeId("el"),
+      id: "el-2",
       type: "text",
       content: "Subtitle goes here",
       x: 10,
@@ -112,12 +111,12 @@ const templates: SlideTemplate[] = [
     description: "Hero heading with metrics strip",
     createSlides: () => [
       {
-        id: makeId("slide"),
+        id: "slide-pitch",
         templateId: "pitch",
         background: "linear-gradient(130deg, oklch(0.18 0.06 235), oklch(0.12 0.03 250))",
         elements: [
           {
-            id: makeId("el"),
+            id: "el-pitch-1",
             type: "text",
             content: "Launch faster with Warp Slides",
             x: 9,
@@ -130,7 +129,7 @@ const templates: SlideTemplate[] = [
             color: "#f8fafc",
           },
           {
-            id: makeId("el"),
+            id: "el-pitch-2",
             type: "text",
             content: "Build narrative decks from docs and data in one workspace.",
             x: 9,
@@ -143,7 +142,7 @@ const templates: SlideTemplate[] = [
             color: "#cbd5e1",
           },
           {
-            id: makeId("el"),
+            id: "el-pitch-3",
             type: "shape",
             content: "24h faster prep time",
             x: 9,
@@ -165,12 +164,12 @@ const templates: SlideTemplate[] = [
     description: "Sectioned agenda layout",
     createSlides: () => [
       {
-        id: makeId("slide"),
+        id: "slide-agenda",
         templateId: "agenda",
         background: "linear-gradient(170deg, oklch(0.15 0.02 260), oklch(0.11 0.02 260))",
         elements: [
           {
-            id: makeId("el"),
+            id: "el-agenda-1",
             type: "text",
             content: "Agenda",
             x: 10,
@@ -183,7 +182,7 @@ const templates: SlideTemplate[] = [
             color: "#f3f4f6",
           },
           {
-            id: makeId("el"),
+            id: "el-agenda-2",
             type: "text",
             content: "1. Problem\n2. Solution\n3. Product Demo\n4. Rollout Plan",
             x: 10,
@@ -196,7 +195,7 @@ const templates: SlideTemplate[] = [
             color: "#d1d5db",
           },
           {
-            id: makeId("el"),
+            id: "el-agenda-3",
             type: "shape",
             content: "Visual",
             x: 62,
@@ -222,13 +221,13 @@ const normalizeSlides = (content?: string): Slide[] => {
     if (!Array.isArray(parsed) || parsed.length === 0) return [defaultTitleSlide()]
 
     return parsed.map((slide: Partial<Slide>, slideIndex: number) => ({
-      id: slide.id || `${makeId("slide")}-${slideIndex}`,
+      id: slide.id || `slide-${slideIndex + 1}`,
       templateId: slide.templateId || "custom",
       background:
         slide.background || "linear-gradient(160deg, oklch(0.14 0.01 260), oklch(0.11 0.01 260))",
       elements: Array.isArray(slide.elements)
         ? slide.elements.map((el: Partial<SlideElement>, elementIndex: number) => ({
-            id: el.id || `${makeId("el")}-${slideIndex}-${elementIndex}`,
+            id: el.id || `el-${slideIndex + 1}-${elementIndex + 1}`,
             type: el.type === "image" || el.type === "shape" ? el.type : "text",
             content: typeof el.content === "string" ? el.content : "",
             x: typeof el.x === "number" ? el.x : 10,
@@ -257,6 +256,12 @@ export default function SlideEditor({
   onTitleChange,
   editorRef,
 }: SlideEditorProps) {
+  const idCounterRef = useRef(0)
+  const makeId = useCallback((prefix: string) => {
+    idCounterRef.current += 1
+    return `${prefix}-${idCounterRef.current}`
+  }, [])
+
   const [title, setTitle] = useState(initialTitle || "Untitled Presentation")
   const [isSaving, setIsSaving] = useState(false)
   const saveTimeoutRef = useRef<NodeJS.Timeout | null>(null)
@@ -304,7 +309,7 @@ export default function SlideEditor({
     const copy: Slide = {
       ...activeSlide,
       id: makeId("slide"),
-      elements: activeSlide.elements.map((el) => ({ ...el, id: `${makeId("el")}-${el.id}` })),
+      elements: activeSlide.elements.map((el) => ({ ...el, id: makeId("el") })),
     }
     const newSlides = [...slides]
     newSlides.splice(activeSlideIndex + 1, 0, copy)
@@ -411,7 +416,11 @@ export default function SlideEditor({
   const applyTemplate = (templateId: string) => {
     const template = templates.find((t) => t.id === templateId)
     if (!template) return
-    const newSlides = template.createSlides()
+    const newSlides = template.createSlides().map((slide) => ({
+      ...slide,
+      id: makeId("slide"),
+      elements: slide.elements.map((el) => ({ ...el, id: makeId("el") })),
+    }))
     updateSlides(newSlides)
     setActiveSlideIndex(0)
     setSelectedElementId(null)
@@ -492,7 +501,7 @@ export default function SlideEditor({
         }),
       }),
     }
-  }, [slides, activeSlideIndex, activeSlide, editorRef, updateSlides])
+  }, [slides, activeSlideIndex, activeSlide, editorRef, updateSlides, makeId])
 
   const selectedElement = activeSlide?.elements.find((el) => el.id === selectedElementId) || null
 

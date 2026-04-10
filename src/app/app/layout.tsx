@@ -8,18 +8,20 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, Di
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 
+const getInitialApiKey = () => (typeof window !== "undefined" ? localStorage.getItem("openrouter_api_key") || "" : "")
+const getInitialModelId = () =>
+  typeof window !== "undefined"
+    ? localStorage.getItem("openrouter_model_id") || "meta-llama/llama-3-8b-instruct:free"
+    : "meta-llama/llama-3-8b-instruct:free"
+
 export default function AppLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
   const [settingsOpen, setSettingsOpen] = useState(false)
-  const [apiKey, setApiKey] = useState(() => (typeof window !== "undefined" ? localStorage.getItem("openrouter_api_key") || "" : ""))
-  const [modelId, setModelId] = useState(() =>
-    typeof window !== "undefined"
-      ? localStorage.getItem("openrouter_model_id") || "meta-llama/llama-3-8b-instruct:free"
-      : "meta-llama/llama-3-8b-instruct:free"
-  )
+  const [apiKey, setApiKey] = useState(getInitialApiKey)
+  const [modelId, setModelId] = useState(getInitialModelId)
 
   const saveSettings = () => {
     localStorage.setItem("openrouter_api_key", apiKey)

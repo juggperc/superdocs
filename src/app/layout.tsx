@@ -26,14 +26,14 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const { userId } = await auth();
+  await auth();
 
   return (
     <html
       lang="en"
       className={`${dmSans.variable} ${jetbrainsMono.variable} h-full antialiased dark`}
     >
-      <body className="min-h-full flex flex-col" data-authenticated={Boolean(userId)}>
+      <body className="min-h-full flex flex-col">
         <ClerkProvider>{children}</ClerkProvider>
       </body>
     </html>
