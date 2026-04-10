@@ -12,6 +12,7 @@ const getInitialModelId = () =>
   typeof window !== "undefined"
     ? localStorage.getItem("openrouter_model_id") || "meta-llama/llama-3-8b-instruct:free"
     : "meta-llama/llama-3-8b-instruct:free"
+const isClerkEnabled = Boolean(process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY)
 
 export default function AppLayout({
   children,
@@ -38,33 +39,37 @@ export default function AppLayout({
         </div>
 
         <div className="flex items-center gap-2 text-zinc-500">
-          <Show when="signed-out">
-            <SignInButton mode="modal">
-              <button
-                type="button"
-                className="px-3 h-8 rounded-md text-xs font-medium border border-zinc-200 hover:bg-zinc-100 transition-colors text-zinc-700"
-              >
-                Sign in
-              </button>
-            </SignInButton>
-            <SignUpButton mode="modal">
-              <button
-                type="button"
-                className="px-3 h-8 rounded-md text-xs font-medium bg-zinc-900 text-white hover:bg-zinc-800 transition-colors"
-              >
-                Sign up
-              </button>
-            </SignUpButton>
-          </Show>
-          <Show when="signed-in">
-            <UserButton
-              appearance={{
-                elements: {
-                  avatarBox: "w-8 h-8",
-                },
-              }}
-            />
-          </Show>
+          {isClerkEnabled ? (
+            <>
+              <Show when="signed-out">
+                <SignInButton mode="modal">
+                  <button
+                    type="button"
+                    className="px-3 h-8 rounded-md text-xs font-medium border border-zinc-200 hover:bg-zinc-100 transition-colors text-zinc-700"
+                  >
+                    Sign in
+                  </button>
+                </SignInButton>
+                <SignUpButton mode="modal">
+                  <button
+                    type="button"
+                    className="px-3 h-8 rounded-md text-xs font-medium bg-zinc-900 text-white hover:bg-zinc-800 transition-colors"
+                  >
+                    Sign up
+                  </button>
+                </SignUpButton>
+              </Show>
+              <Show when="signed-in">
+                <UserButton
+                  appearance={{
+                    elements: {
+                      avatarBox: "w-8 h-8",
+                    },
+                  }}
+                />
+              </Show>
+            </>
+          ) : null}
           <button 
             type="button" 
             onClick={() => setSettingsOpen(true)}
