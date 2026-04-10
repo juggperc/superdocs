@@ -23,7 +23,7 @@ export default function Home() {
       <header className="sticky top-0 z-50 w-full glass-subtle">
         <div className="max-w-6xl mx-auto px-6 h-14 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-2.5 text-foreground font-semibold text-sm tracking-tight">
-            <div className="w-6 h-6 rounded-md bg-primary/15 flex items-center justify-center">
+            <div className="w-6 h-6 rounded-md bg-primary/15 flex items-center justify-center glow-sm">
               <Sparkles className="w-3 h-3 text-primary" />
             </div>
             superdocs
@@ -88,7 +88,7 @@ export default function Home() {
 
         <section className="pb-24 px-6">
           <div className="max-w-4xl mx-auto">
-            <div className="rounded-2xl overflow-hidden border border-white/[0.06] bg-[oklch(0.12_0.005_260)] noise">
+            <div className="glass-strong rounded-2xl overflow-hidden noise">
               <div className="h-10 border-b border-white/[0.06] flex items-center px-4 gap-2 glass-subtle">
                 <div className="w-2.5 h-2.5 rounded-full bg-white/10" />
                 <div className="w-2.5 h-2.5 rounded-full bg-white/10" />
