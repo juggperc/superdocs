@@ -522,6 +522,35 @@ export default function SlideEditor({
 
   const selectedElement = activeSlide?.elements.find((el) => el.id === selectedElementId) || null
 
+  useEffect(() => {
+    if (!selectedElementId) return
+
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (!selectedElement) return
+      const step = event.shiftKey ? 5 : 1
+      let nextX = selectedElement.x
+      let nextY = selectedElement.y
+
+      if (event.key === "ArrowLeft") nextX = clamp(selectedElement.x - step, 0, 100 - selectedElement.width)
+      if (event.key === "ArrowRight") nextX = clamp(selectedElement.x + step, 0, 100 - selectedElement.width)
+      if (event.key === "ArrowUp") nextY = clamp(selectedElement.y - step, 0, 100 - selectedElement.height)
+      if (event.key === "ArrowDown") nextY = clamp(selectedElement.y + step, 0, 100 - selectedElement.height)
+
+      if (event.key === "Escape") {
+        setSelectedElementId(null)
+        return
+      }
+
+      if (nextX !== selectedElement.x || nextY !== selectedElement.y) {
+        event.preventDefault()
+        updateElement(selectedElement.id, { x: nextX, y: nextY })
+      }
+    }
+
+    window.addEventListener("keydown", onKeyDown)
+    return () => window.removeEventListener("keydown", onKeyDown)
+  }, [selectedElementId, selectedElement, updateElement])
+
   return (
     <main className="flex-1 flex flex-col overflow-hidden relative">
       <div className="h-10 glass-subtle flex items-center px-3 gap-1 shrink-0 overflow-x-auto border-b border-white/[0.04]">
