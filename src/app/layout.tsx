@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 };
 
 const clerkPublishableKey = process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY;
-const clerkServerEnabled = Boolean(
+const clerkEnabled = Boolean(
   clerkPublishableKey && process.env.CLERK_SECRET_KEY,
 );
 
@@ -18,17 +18,15 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  if (clerkServerEnabled) {
+  if (clerkEnabled) {
     await auth();
   }
 
   return (
     <html lang="en" className="h-full antialiased dark">
       <body className="min-h-full flex flex-col">
-        {clerkServerEnabled ? (
-          <ClerkProvider publishableKey={clerkPublishableKey}>
-            {children}
-          </ClerkProvider>
+        {clerkEnabled ? (
+          <ClerkProvider>{children}</ClerkProvider>
         ) : (
           children
         )}

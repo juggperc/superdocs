@@ -12,7 +12,7 @@ const getInitialModelId = () =>
   typeof window !== "undefined"
     ? localStorage.getItem("openrouter_model_id") || "meta-llama/llama-3-8b-instruct:free"
     : "meta-llama/llama-3-8b-instruct:free"
-const clerkClientEnabled = Boolean(process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY)
+const clerkEnabled = Boolean(process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY)
 
 export default function AppLayout({
   children,
@@ -39,7 +39,7 @@ export default function AppLayout({
         </div>
 
         <div className="flex items-center gap-2 text-zinc-500">
-          {clerkClientEnabled ? (
+          {clerkEnabled ? (
             <>
               <Show when="signed-out">
                 <SignInButton mode="modal">
