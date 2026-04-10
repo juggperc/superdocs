@@ -1,11 +1,11 @@
 import { clerkMiddleware } from "@clerk/nextjs/server"
 import { NextResponse } from "next/server"
 
-const clerkEnabled = Boolean(
+const isClerkEnabled = Boolean(
   process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY && process.env.CLERK_SECRET_KEY,
 )
 
-export default clerkEnabled
+export default isClerkEnabled
   ? clerkMiddleware()
   : () => NextResponse.next()
 
